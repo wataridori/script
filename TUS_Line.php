@@ -4,8 +4,8 @@
         private $tokenCount = 0;
         private $text;
         private $numReg ="/[0-9]+/";
-        private $strReg ="/[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\|\||[[:punct:]]/";
-        private $idenReg = '/(\\"|\\\\|\\n|[^"])*/';
+        private $strReg = '/(\\"|\\\\|\\n|[^"])*/';
+        private $idenReg = "/[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\|\||[[:punct:]]/";
         private $tokens;
         
         function __construct($text, $lineNumber){
