@@ -79,7 +79,7 @@
             $result->text = $this->text;
             $result->lineNumber = $this->lineNumber;
             $result->tokenOrder = $this->order;
-            $result->isIdentifier = $this->is_identifer;
+            $result->isIdentifier = $this->is_identifier;
             $result->isNumber = $this->is_number;
             $result->isString = $this->is_string;
             $result->isComment = $this->is_comment;

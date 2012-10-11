@@ -2,5 +2,6 @@ while i < 10 {
     sum = sum +1
 //This is a comment    
     i=i+1
+    s = "hoge"
 }
 sum
