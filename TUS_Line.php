@@ -12,7 +12,7 @@
             $this->text = $text;
             $this->lineNumber = $lineNumber;
             $this->parseToken();            
-            $reg = "/\\s*|((\/\/.*)|([0-9]+)|(\"(\\\\\"|\\\\\\\\|\\\\n|[^\"])*\")"."|[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\\|\\||p{Punct})?/";
+            $reg = "/\\s*|((\/\/.*)|([0-9]+)|(\"(\\\\\"|\\\\\\\\|\\\\n|[^\"])*\")"."|[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\\|\\||[[:punct:]])?/";
             preg_match_all($reg,$this->text,$matches);
             $i = 0;
             foreach ($matches[0] as $match){
