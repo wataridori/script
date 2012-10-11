@@ -4,7 +4,7 @@
         private $tokenCount = 0;
         private $text;
         private $numReg ="/[0-9]+/";
-        private $strReg ="/[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\|\||p{Punct}/";
+        private $strReg ="/[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\|\||[[:punct:]]/";
         private $idenReg = '/(\\"|\\\\|\\n|[^"])*/';
         private $tokens;
         
