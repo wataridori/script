@@ -4,5 +4,5 @@
     include (__DIR__.'/TUS_Token.php');
     $filepath = __DIR__."/script.tus";
     $fileReader = new TUS_FileReader($filepath);
-    print_r ($fileReader->getArrayObject());
+    print_r ($fileReader->getTokens());
 ?>

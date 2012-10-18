@@ -60,5 +60,8 @@
             return $result;
         }
         
+        function getTokens(){
+            return $this->tokens;
+        }
     }
 ?>

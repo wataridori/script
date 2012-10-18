@@ -5,14 +5,24 @@
         private $fileContent;
         private $lines;
         private $lineCount;
+        private $tokens = array();
         
-        function __construct($filePath){
+        function __construct($filePath){            
             $this->filePath = $filePath;
             $pathinfo = pathinfo($filePath);            
             $this->fileName = $pathinfo['basename'];
             $this->fileContent = file_get_contents($this->filePath, true);            
             $this->lines = explode("\n",$this->fileContent);            
-            $this->lineCount = count($this->lines);            
+            $this->lineCount = count($this->lines);
+            $j=0;
+            for ($i=0;$i<$this->lineCount;$i++){
+                $line = $this->getLine($i);
+                $lineTokens = $line->getTokens();
+                foreach ($lineTokens as $token){
+                    $token->tokenOrder = $j++;
+                    $this->tokens[] = $token;
+                }
+            }
         }
         
         function getLine($lineNumber){
@@ -31,6 +41,10 @@
                 $result->lines[] = $newline->getArrayObject();
             }
             return $result;
+        }
+        
+        function getTokens(){
+            return $this->tokens;
         }
     }
 ?>
