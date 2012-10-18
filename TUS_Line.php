@@ -12,7 +12,7 @@
             $this->text = $text;
             $this->lineNumber = $lineNumber;
             $this->parseToken();            
-            $reg = "/\\s*|((\/\/.*)|([0-9]+)|(\"(\\\\\"|\\\\\\\\|\\\\n|[^\"])*\")"."|[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\\|\\||[[:punct:]])?/";
+            $reg = "/\\s*|((\/\/.*)|([0-9]+)|(\"(\\\\\"|\\\\\\\\|\\\\n|[^\"])*\")|[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\\|\\||[[:punct:]])?/";
             preg_match_all($reg,$this->text,$matches);
             $i = 0;
             foreach ($matches[0] as $match){
@@ -22,11 +22,11 @@
                     $this->tokens[$i++] = $token->getArrayObject();
                 }
                 if (!preg_match("/[\s]+/", $match) && $match != ""){                    
-                    if (preg_match($this->numReg,$match)){                        
+                    if (preg_match($this->numReg,$match)){
                         $token = new TUS_Token($match,TUS_Token::NUM,$i,$this->lineNumber);
                         $this->tokens[$i++] = $token->getArrayObject();
                     }                    
-                    else if (preg_match($this->strReg,$match)){                        
+                    else if (preg_match($this->strReg,$match)){
                         $token = new TUS_Token($match,TUS_Token::STR,$i,$this->lineNumber);
                         $this->tokens[$i++] = $token->getArrayObject();
                     }
