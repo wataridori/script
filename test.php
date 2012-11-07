@@ -2,7 +2,14 @@
     include (__DIR__.'/TUS_FileReader.php');
     include (__DIR__.'/TUS_Line.php');
     include (__DIR__.'/TUS_Token.php');
+    include (__DIR__.'/TUS_ASTree.php');
+    include (__DIR__.'/TUS_ExprParser.php');
+    include (__DIR__.'/TUS_OpPrecedenceParser.php');
+    
     $filepath = __DIR__."/script.tus";
     $fileReader = new TUS_FileReader($filepath);
-    print_r ($fileReader->getTokens());
+    
+    $p1 = new TUS_ExprParser($fileReader);
+    $tree1 = $p1->expression();
+    echo $tree1->toString()."\n";        
 ?>

@@ -6,6 +6,8 @@
         private $lines;
         private $lineCount;
         private $tokens = array();
+        private $current = 0;
+        private $count;
         
         function __construct($filePath){            
             $this->filePath = $filePath;
@@ -17,12 +19,44 @@
             $j=0;
             for ($i=0;$i<$this->lineCount;$i++){
                 $line = $this->getLine($i);
-                $lineTokens = $line->getTokens();
+                $lineTokens = $line->getAllTokens();
                 foreach ($lineTokens as $token){
                     $token->tokenOrder = $j++;
                     $this->tokens[] = $token;
                 }
             }
+            $this->count = $j;
+        }
+        
+        function getCurrent(){
+            return $this->current;
+        }
+        
+        function setCurrent($val){
+            $this->current = $val;
+        }
+        
+        function getCurrentToken (){
+            return $this->tokens[$this->current];
+        }
+        
+        function read(){
+            if (!$this->hasMore()) return null;
+            $token = $this->tokens[$this->current];
+            $this->current += 1;
+            return $token;
+        }
+        
+        function hasMore(){
+            return ($this->current < $this->count);
+        }
+        
+        function getToken($i){
+            return $this->tokens[$i];
+        }
+        
+        function getAllTokens(){
+            return $this->tokens;
         }
         
         function getLine($lineNumber){
@@ -41,10 +75,6 @@
                 $result->lines[] = $newline->getArrayObject();
             }
             return $result;
-        }
-        
-        function getTokens(){
-            return $this->tokens;
         }
     }
 ?>
