@@ -18,24 +18,20 @@
             foreach ($matches[0] as $match){
                 
                 if (preg_match("/\/\/.*/",$match)){                    
-                    $token = new TUS_Token($match,TUS_Token::COM,$i,$this->lineNumber);                    
-                    //$this->tokens[$i++] = $token->getArrayObject();
+                    $token = new TUS_Token($match,TUS_Token::COM,$i,$this->lineNumber);                                        
                     $this->tokens[$i++] = $token;
                 }
                 if (!preg_match("/[\s]+/", $match) && $match != ""){                    
                     if (preg_match($this->numReg,$match)){                        
-                        $token = new TUS_Token($match,TUS_Token::NUM,$i,$this->lineNumber);
-                        //$this->tokens[$i++] = $token->getArrayObject();
+                        $token = new TUS_Token($match,TUS_Token::NUM,$i,$this->lineNumber);                        
                         $this->tokens[$i++] = $token;
                     }                    
                     else if (preg_match($this->strReg,$match)){                        
-                        $token = new TUS_Token($match,TUS_Token::STR,$i,$this->lineNumber);
-                        //$this->tokens[$i++] = $token->getArrayObject();
+                        $token = new TUS_Token($match,TUS_Token::STR,$i,$this->lineNumber);                        
                         $this->tokens[$i++] = $token;
                     }
                     else if (preg_match($this->idenReg,$match)){
-                        $token = new TUS_Token($match,TUS_Token::IDE,$i,$this->lineNumber);
-                        //$this->tokens[$i++] = $token->getArrayObject();
+                        $token = new TUS_Token($match,TUS_Token::IDE,$i,$this->lineNumber);                        
                         $this->tokens[$i++] = $token;
                     }
                 }                
