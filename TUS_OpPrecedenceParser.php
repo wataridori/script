@@ -34,7 +34,7 @@ class TUS_OpPrecedenceParser{
     }
     
     function doShift($left, $prec){
-        $op = $this->file->read();
+        $op = new TUS_ASTLeaf($this->file->read());
         $right = $this->factor();
         while (($next = $this->nextOperator()) != null && $this->rightIsExpr($prex,$next))
             $right = $this->doShift($right,$next->value);

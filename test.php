@@ -9,7 +9,7 @@
     $filepath = __DIR__."/script.tus";
     $fileReader = new TUS_FileReader($filepath);
     
-    $p = new TUS_ExprParser($fileReader);
+    $p = new TUS_OpPrecedenceParser($fileReader);
     $tree = $p->expression();
     echo $tree->toString()."\n";        
 ?>
