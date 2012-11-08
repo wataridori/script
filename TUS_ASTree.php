@@ -1,6 +1,6 @@
 <?php
 
-	interface TUS_ASTree {
+	abstract class TUS_ASTree {
 		function child($i);
 		function numChildren();
 		function children();
