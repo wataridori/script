@@ -7,6 +7,10 @@ class Precedence {
         $this->value = $v;
         $this->leftAssoc = $a;
     }
+    
+    function getValue(){
+        return $this->value;
+    }
 }
 
 class TUS_OpPrecedenceParser{
@@ -22,21 +26,22 @@ class TUS_OpPrecedenceParser{
         $operators["-"] = new Precedence(2,true);
         $operators["*"] = new Precedence(3,true);
         $operators["/"] = new Precedence(3,true);
-        $operators["^"] = new Precedence(4,true);
-        $this->operators = $operators;
+        $operators["^"] = new Precedence(4,false);
+        $this->operators = $operators;        
     }
     
     function expression() {
         $right = $this->factor();
-        while (($next = $this->nextOperator()) != null)
+        while (($next = $this->nextOperator()) != null){            
             $right = $this->doShift($right,$next->value);
+        }
         return $right;
     }
     
     function doShift($left, $prec){
         $op = new TUS_ASTLeaf($this->file->read());
         $right = $this->factor();
-        while (($next = $this->nextOperator()) != null && $this->rightIsExpr($prex,$next))
+        while (($next = $this->nextOperator()) != null && $this->rightIsExpr($prec,$next))
             $right = $this->doShift($right,$next->value);
         return new TUS_BinaryExpr(array($left,$op,$right));
     }
@@ -44,8 +49,9 @@ class TUS_OpPrecedenceParser{
     function nextOperator(){
         if (!$this->file->hasMore()) return null;
         $t = $this->file->getCurrentToken();
-        if ($t->isIdentifier())
+        if ($t->isIdentifier()){            
             return $this->operators["{$t->getText()}"];
+        }
         else return null;
     }
     
