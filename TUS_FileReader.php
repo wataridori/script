@@ -23,7 +23,8 @@
                 foreach ($lineTokens as $token){
                     $token->tokenOrder = $j++;
                     $this->tokens[] = $token;
-                }
+                }                
+                $this->tokens[] = new TUS_Token(TUS_Token::EOL,TUS_Token::EOL,$j++,$i);                        
             }
             $this->count = $j;
         }

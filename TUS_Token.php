@@ -3,12 +3,13 @@
         private $lineNumber;
         private $text;
         private $order;
-        private $is_identifier, $is_string, $is_number, $is_comment;
+        private $is_identifier, $is_string, $is_number, $is_comment, $is_eol;
         const IDE = 1;
         const NUM = 2;
         const STR = 3;
         const COM = 4;
         const UNK = 0;
+        const EOL = "\n";
         
         function __construct($text, $type, $order = -1, $lineNumber = -1){
             $this->text = $text;
@@ -18,7 +19,8 @@
                 case TUS_Token::IDE : $this->setTokenIdentifier(); break;
                 case TUS_Token::NUM : $this->setTokenNumber(); break;
                 case TUS_Token::STR : $this->setTokenString(); break;
-                case TUS_Token::COM : $this->setTokenComment(); break;    
+                case TUS_Token::COM : $this->setTokenComment(); break;
+                case TUS_Token::EOL : $this->setTokenEOL(); break;    
                 default : $this->resetTokenType();   break;
             }            
         }
@@ -68,6 +70,15 @@
         function setTokenComment(){
             $this->resetTokenType();
             $this->is_comment = true;
+        }
+        
+        function isEOL(){
+            return $this->is_eol;
+        }
+        
+        function setTokenEOL(){
+            $this->resetTokenType();
+            $this->is_eol = true;
         }
                 
         function getText(){
