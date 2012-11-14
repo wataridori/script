@@ -29,7 +29,7 @@ class TUS_ASTLeaf{
 
 class TUS_ASTList{
     private $children;
-    function __construct($list) {
+    function __construct($list = null) {
         $this->children = $list;
     }
     
@@ -50,6 +50,22 @@ class TUS_ASTList{
             return $child->location();
         }
     }
+    
+    function toString ($list = null){
+        $s = "(";
+        $sep ="";
+        if ($list == null) $list = $this->children();
+        foreach ($list as $child){            
+            $s .= $sep;
+            $sep = " ";
+            if (get_class($child) == "TUS_ASTLeaf")
+                $s .= $child->toString();
+            else 
+                $s .= $child->toString($child->children());
+        }
+        $s .=")";
+        return $s;
+    }
 }
 
 class TUS_BinaryExpr extends TUS_ASTList{
@@ -63,21 +79,5 @@ class TUS_BinaryExpr extends TUS_ASTList{
     
     function right(){
         return $this->child(2);
-    }
-    
-    function toString ($list = null){
-        $s = "(";
-        $sep ="";
-        if ($list == null) $list = $this->children();
-        foreach ($list as $child){            
-            $s .= $sep;
-            $sep = " ";
-            if (get_class($child) == "TUS_ASTLeaf")
-                $s .= $child->toString();
-            else if (get_class($child) == "TUS_BinaryExpr")
-                $s .= $this->toString($child->children());
-        }
-        $s .=")";
-        return $s;
-    }
+    }    
 }

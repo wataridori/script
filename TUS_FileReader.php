@@ -20,8 +20,12 @@
             for ($i=0;$i<$this->lineCount;$i++){
                 $line = $this->getLine($i);
                 $lineTokens = $line->getAllTokens();
+                if (count($lineTokens) == 0) {
+                    $this->tokens[] = new TUS_Token(TUS_Token::EOL,TUS_Token::EOL,$j++,$i);                        
+                    continue;
+                }
                 foreach ($lineTokens as $token){
-                    $token->tokenOrder = $j++;
+                    $token->setTokenOrder($j++);
                     $this->tokens[] = $token;
                 }                
                 $this->tokens[] = new TUS_Token(TUS_Token::EOL,TUS_Token::EOL,$j++,$i);                        

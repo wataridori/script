@@ -3,7 +3,7 @@
         private $lineNumber;
         private $text;
         private $order;
-        private $is_identifier, $is_string, $is_number, $is_comment, $is_eol;
+        private $is_identifier, $is_string, $is_number, $is_comment;
         const IDE = 1;
         const NUM = 2;
         const STR = 3;
@@ -70,19 +70,19 @@
         function setTokenComment(){
             $this->resetTokenType();
             $this->is_comment = true;
-        }
-        
-        function isEOL(){
-            return $this->is_eol;
-        }
+        }        
         
         function setTokenEOL(){
             $this->resetTokenType();
-            $this->is_eol = true;
+            $this->is_identifier = true;
         }
                 
         function getText(){
             return $this->text;  
+        }
+        
+        function setTokenOrder($i){
+            $this->order = $i;
         }
         
         function getArrayObject(){
