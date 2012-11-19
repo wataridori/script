@@ -10,7 +10,7 @@ class NegativeExpr extends TUS_ASTList{
     function evaluate($env){
         $neg = $this->operand()->evaluate($env);
         if ($neg) {
-            return (-1)*$neg;            
+            return -$neg;            
         } else {
             throw new Exception("Negative Expression Error !");
         }
