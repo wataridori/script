@@ -6,6 +6,15 @@ class NegativeExpr extends TUS_ASTList{
     function toString(){
         return "(-".$this->operand()->toString().")";
     }
+    
+    function evaluate($env){
+        $neg = $this->operand()->evaluate($env);
+        if ($neg) {
+            return (-1)*$neg;            
+        } else {
+            throw new Exception("Negative Expression Error !");
+        }
+    }
 }
 
 class PrimaryExpr extends TUS_ASTList{
@@ -16,7 +25,12 @@ class PrimaryExpr extends TUS_ASTList{
 }
 
 class BlockStmnt extends TUS_ASTList{
-    
+    function evaluate ($env){
+        foreach ($this->children() as $child){
+            $result = $child->evaluate($env);
+        }
+        return $result;
+    }
 }
 
 class IfStmnt extends TUS_ASTList{
@@ -41,6 +55,17 @@ class IfStmnt extends TUS_ASTList{
         else $s .= ")";        
         return $s;
     }
+    
+    function evaluate($env){
+        $con = $this->condition()->evaluate($env);
+        if ($con) {
+            return $this->thenBlock()->evaluate($env);
+        } else {
+            if ($this->elseBlock() != null) {
+                return $this->elseBlock()->evaluate($env);
+            } else return null;
+        }
+    }
 }
 
 class whileStmnt extends TUS_ASTList{
@@ -55,11 +80,26 @@ class whileStmnt extends TUS_ASTList{
     function toString(){
         return "(while {$this->condition()->toString()} {$this->body()->toString()})";
     }
+    
+    function evaluate($env){
+        $result = null;
+        while (true){
+            $con = $this->condition()->evaluate($env);
+            if ($con) {
+                $result = $this->body()->evaluate($env);
+            } else {
+                return $result;
+            }
+        }
+    }
 }
 
 class NullStmnt extends TUS_ASTList{
     function toString(){
         return "";
+    }
+    function evaluate($env){
+        return null;
     }
 }
 
@@ -77,7 +117,8 @@ class TUS_BasicParser {
             return $e;
         } else {
             $t = $this->file->read();
-            if ($t->isNumber() || $t->isIdentifier() || $t->isString()) return new TUS_ASTLeaf($t);
+            if ($t->isIdentifier()) return new TUS_Name($t);
+            if ($t->isNumber() || $t->isString()) return new TUS_ASTLeaf($t);
             else $this->throwError($t);
         }        
     }
@@ -193,6 +234,16 @@ class TUS_BasicParser {
             $s .= $p->toString()."\n";
         }
         return $s;
+    }
+    
+    function evaluate($env){        
+        while ($this->file->hasMore()){            
+            $this->program()->evaluate($env);
+        }        
+    }
+    
+    function renew(){
+        $this->fie->setCurrent(0);
     }
     
     function throwError($token){
