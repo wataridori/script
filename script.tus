@@ -11,4 +11,4 @@ while i < 10 {
   i = i + 1
 }
 
-even + odd
+re = even + odd^(1/2)
