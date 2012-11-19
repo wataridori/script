@@ -25,6 +25,20 @@ class TUS_ASTLeaf{
     function token(){
         return $this->token;
     }
+    
+    function evaluate($env){
+        return $this->token->getText();
+    }
+}
+
+class TUS_Name extends TUS_ASTLeaf{
+    function name(){
+        return $this->toString();
+    }
+    
+    function evaluate($env) {
+        return $env->get($this->name());
+    }
 }
 
 class TUS_ASTList{
@@ -79,5 +93,37 @@ class TUS_BinaryExpr extends TUS_ASTList{
     
     function right(){
         return $this->child(2);
+    }
+    
+    function evaluate($env){
+        $op = $this->operator();
+        
+        if ($op == "="){
+            $rightValue = $this->right()->evaluate($env);
+            if ($this->left()->token()->isIdentifier()){
+                $env->put($this->left()->toString(),$rightValue);
+            }
+            return $rightValue;
+        } else if ($op == "+") {
+            return $this->left()->evaluate($env) + $this->right()->evaluate($env);
+        } else if ($op == "-") {
+            return $this->left()->evaluate($env) - $this->right()->evaluate($env);
+        } else if ($op == "*") {
+            return $this->left()->evaluate($env) * $this->right()->evaluate($env);
+        } else if ($op == "/") {
+            return $this->left()->evaluate($env) / $this->right()->evaluate($env);
+        } else if ($op == "%") {
+            return $this->left()->evaluate($env) % $this->right()->evaluate($env);
+        } else if ($op == "^") {
+            return pow($this->left()->evaluate($env),$this->right()->evaluate($env));
+        } else if ($op == "==") {
+            return $this->left()->evaluate($env) == $this->right()->evaluate($env);
+        } else if ($op == ">") {
+            return $this->left()->evaluate($env) > $this->right()->evaluate($env);
+        } else if ($op == "<") {
+            return $this->left()->evaluate($env) < $this->right()->evaluate($env);
+        }
+        
+        return null;
     }    
 }
