@@ -1,0 +1,10 @@
+def add (a, b){
+  c = 1
+  while (c<10) {
+    a = a + b
+    c = c +1
+  }
+  a
+}
+
+result = add(2,3)
