@@ -44,15 +44,14 @@
             } else $this->throwError($p);
         }
         
-        function params(){
+        function params(){            
             $left = $this->param();
-            if (!$this->isToken(",")) return new TUS_Arguments(array($left));
+            $params = array($left);
             while ($this->isToken(",")){
-                $p = new TUS_ASTLeaf($this->file->read());
-                $right = $this->param();
-                $left = new TUS_Arguments(array($left,$right));            
+                $this->token(",");
+                $params[] = $this->param();                
             }
-            return $left;
+            return new TUS_Arguments($params);
         }
         
         function paramList(){
@@ -77,13 +76,12 @@
         
         function args() {
             $left = $this->equation();
-            if (!$this->isToken(",")) return new TUS_ASTList(array($left));
+            $args = array($left);            
             while ($this->isToken(",")) {
-                $t = new TUS_ASTLeaf($this->file->read());
-                $right = $this->equation();
-                $left = new TUS_ASTList(array($left,$right));
+                $this->token(",");
+                $args[] = $this->equation();                
             }
-            return $left;
+            return new TUS_ASTList($args);
         }
         
         function postfix(){
