@@ -140,7 +140,7 @@ class TUS_BasicParser {
     }
     
     function renew(){
-        $this->fie->setCurrent(0);
+        $this->file->setCurrent(0);
     }
     
     function throwError($token){
