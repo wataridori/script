@@ -4,6 +4,8 @@
     $fileReader = new TUS_FileReader($filepath);                        
     $p = new TUS_FuncParser($fileReader);        
     $env = new TUS_BasicEnv();
-    $p->evaluate($env);
+    print_r($p->parse());
+    $p->renew();
+    $p->evaluate($env);    
     echo $env->get("result")."\n";
 ?>
