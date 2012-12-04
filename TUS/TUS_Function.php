@@ -46,6 +46,7 @@
         
         function params(){
             $left = $this->param();
+            if (!$this->isToken(",")) return new TUS_Arguments(array($left));
             while ($this->isToken(",")){
                 $p = new TUS_ASTLeaf($this->file->read());
                 $right = $this->param();
@@ -76,6 +77,7 @@
         
         function args() {
             $left = $this->equation();
+            if (!$this->isToken(",")) return new TUS_ASTList(array($left));
             while ($this->isToken(",")) {
                 $t = new TUS_ASTLeaf($this->file->read());
                 $right = $this->equation();
