@@ -81,6 +81,10 @@
             return $this->text;  
         }
         
+        function toString(){
+            return $this->text;
+        }
+        
         function setTokenOrder($i){
             $this->order = $i;
         }

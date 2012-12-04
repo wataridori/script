@@ -1,108 +1,4 @@
 <?php
-class NegativeExpr extends TUS_ASTList{
-    function operand(){
-        return $this->child(0);
-    }
-    function toString(){
-        return "(-".$this->operand()->toString().")";
-    }
-    
-    function evaluate($env){
-        $neg = $this->operand()->evaluate($env);
-        if ($neg) {
-            return -$neg;            
-        } else {
-            throw new Exception("Negative Expression Error !");
-        }
-    }
-}
-
-class PrimaryExpr extends TUS_ASTList{
-    function create($c){
-        if (count($c) == 1) return $c[0];
-        else return (new PrimaryExpr($c));
-    }
-}
-
-class BlockStmnt extends TUS_ASTList{
-    function evaluate ($env){
-        foreach ($this->children() as $child){
-            $result = $child->evaluate($env);
-        }
-        return $result;
-    }
-}
-
-class IfStmnt extends TUS_ASTList{
-    function condition() {
-        return $this->child(0);
-    }
-    
-    function thenBlock() {
-        return $this->child(1);
-    }
-    
-    function elseBlock(){
-        return $this->numChildren() > 2 ? $this->child(2) : null;
-    }
-    
-    function toString(){
-        $s = "(if {$this->condition()->toString()} {$this->thenBlock()->toString()}";
-        $elseBlock = $this->elseBlock();
-        if ($elseBlock != null) {
-            $s .= " else {$this->elseBlock()->toString()})";
-        }
-        else $s .= ")";        
-        return $s;
-    }
-    
-    function evaluate($env){
-        $con = $this->condition()->evaluate($env);
-        if ($con) {
-            return $this->thenBlock()->evaluate($env);
-        } else {
-            if ($this->elseBlock() != null) {
-                return $this->elseBlock()->evaluate($env);
-            } else return null;
-        }
-    }
-}
-
-class whileStmnt extends TUS_ASTList{
-    function condition() {
-        return $this->child(0);
-    }
-    
-    function body() {
-        return $this->child(1);
-    }
-    
-    function toString(){
-        return "(while {$this->condition()->toString()} {$this->body()->toString()})";
-    }
-    
-    function evaluate($env){
-        $result = null;
-        while (true){
-            $con = $this->condition()->evaluate($env);
-            if ($con) {
-                $result = $this->body()->evaluate($env);
-            } else {
-                return $result;
-            }
-        }
-    }
-}
-
-class NullStmnt extends TUS_ASTList{
-    function toString(){
-        return "";
-    }
-    function evaluate($env){
-        return null;
-    }
-}
-
 class TUS_BasicParser {
     protected $file;
     function __construct($file)   {        
@@ -126,7 +22,7 @@ class TUS_BasicParser {
     function factor(){
         if ($this->isToken("-")){
             $op = new TUS_ASTLeaf($this->file->read());
-            return new NegativeExpr(array($this->primary()));
+            return new TUS_NegativeExpr(array($this->primary()));
         }
         else return $this->primary();
     }
@@ -187,7 +83,7 @@ class TUS_BasicParser {
             }
         }
         $this->token("}");
-        return new BlockStmnt($statements);                
+        return new TUS_BlockStmnt($statements);                
     }
     
     function simple(){
@@ -199,18 +95,18 @@ class TUS_BasicParser {
             $this->token('if');
             $e = $this->equation();
             $b1 = $this->block();
-            $i = new IfStmnt(array($e,$b1));
+            $i = new TUS_IfStmnt(array($e,$b1));
             if ($this->isToken('else')){
                 $this->token("else");
                 $b2 = $this->block();
-                $i = new IfStmnt(array($e,$b1,$b2));
+                $i = new TUS_IfStmnt(array($e,$b1,$b2));
             }
             return $i;
         } else if ($this->isToken('while')) {
             $this->token("while");
             $e = $this->equation();
             $b1 = $this->block();
-            return new whileStmnt(array($e, $b1));                        
+            return new TUS_whileStmnt(array($e, $b1));                        
         } else {
             return $this->simple();
         }
@@ -219,10 +115,10 @@ class TUS_BasicParser {
     function program(){        
         if ($this->isToken(";") || $this->isToken(TUS_Token::EOL)){            
             $n = $this->file->read();            
-            return new NullStmnt();
+            return new TUS_NullStmnt();
         } else {            
             $s = $this->statement();
-            $n = $this->file->read();
+            $n = $this->file->read();            
             return $s;
         }
     }
@@ -238,7 +134,8 @@ class TUS_BasicParser {
     
     function evaluate($env){        
         while ($this->file->hasMore()){            
-            $this->program()->evaluate($env);
+            $p = $this->program();            
+            $p->evaluate($env);            
         }        
     }
     
