@@ -16,11 +16,12 @@ class TUS_PrimaryExpr extends TUS_ASTList{
             if (!($operand->parameters() && $operand->body())) {                
             }
             $parameters = $operand->parameters();            
-            $nestEnv = new TUS_BasicEnv();
+            $curEnv = new TUS_BasicEnv();
             for ($i =0 ; $i<$parameters->numChildren(); $i++) {                
-                $nestEnv->put($parameters->child($i)->toString(), $postfix->child($i)->evaluate($env));                
-            }            
-            return $operand->body()->evaluate($nestEnv);
+                $curEnv->put($parameters->child($i)->toString(), $postfix->child($i)->evaluate($env));                
+            }
+            $curEnv->setParentEnv($env);
+            return $operand->body()->evaluate($curEnv);
         } else {
             return $operand;
         }
