@@ -1,23 +1,23 @@
 <?php
 class TUS_BasicEnv{
     protected $values;
-    protected $pe = null;
+    protected $parentEnv = null;
     function __construct($defaultValue = null){
         if ($defaultValue == null) $defaultValue = new ArrayObject;
         $this->values = $defaultValue;
     }
     
     function setParentEnv($env){
-        $this->pe = $env;
+        $this->parentEnv = $env;
     }
     
     function hasParentEnv(){
-        if ($this->pe == null) return false;
+        if ($this->parentEnv == null) return false;
         else return true;
     }
     
     function getParentEnv(){
-        return $this->pe;
+        return $this->parentEnv;
     }
     
     function put($name,$value){
