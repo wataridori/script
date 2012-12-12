@@ -18,11 +18,7 @@
             $this->body = $body;
             $this->env = $env;
         }
-        
-        function makeEnv(){
-            return new TUS_BasicEnv($this->env);
-        }
-        
+                
         function parameters(){
             return $this->params;
         }
@@ -66,9 +62,8 @@
         }
         
         function funcDef(){
-            $this->token("def");
-            $t = $this->file->read();            
-            $funcName = new TUS_Name($t);            
+            $this->token("def");            
+            $funcName = new TUS_Name($this->file->read());            
             $funcParamList = $this->paramList();            
             $funcBody = $this->block();
             return new TUS_DefStmnt(array($funcName,$funcParamList,$funcBody));
