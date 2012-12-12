@@ -1,13 +1,12 @@
-def sum (a,b) {
+def add (a,b) {
     a + b
 }
 
 def fib (n) {
     if (n < 3) {
         1
-    }
-    else {
-        sum(fib(n-1),fib(n-2))
+    } else {
+       add (fib (n-1),fib (n-2))
     }
 }
 

@@ -13,7 +13,7 @@
     $p = new TUS_BasicParser($fileReader);
     print_r($p->parse());
     
-    $fileReader->setCurrent(0);
+    $p->renew();
     $p = new TUS_BasicParser($fileReader);    
     $env = new TUS_BasicEnv();
     $p->evaluate($env);
