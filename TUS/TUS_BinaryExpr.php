@@ -12,7 +12,7 @@ class TUS_BinaryExpr extends TUS_ASTList{
         return $this->child(2);
     }
     
-    function evaluate($env){
+    function evaluate($env){        
         $op = $this->operator();
         
         if ($op == "="){                

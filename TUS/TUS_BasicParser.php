@@ -144,7 +144,8 @@ class TUS_BasicParser {
     }
     
     function throwError($token){
-        throw new Exception("Error occured at line {$token->getLineNumber()}. Invalid token {$token->getText()}");
+        echo "Error occured at line {$token->getLineNumber()}. Invalid token {$token->getText()}\n";
+        exit();
     }
     
     function token($name) {        

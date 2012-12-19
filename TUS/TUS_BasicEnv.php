@@ -30,7 +30,9 @@ class TUS_BasicEnv{
         else if ($this->hasParentEnv()){            
             return $this->getParentEnv()->get($name);        
         }
-        else return null;
+        else {            
+            return null;
+        }        
     }    
 }
 ?>

@@ -28,7 +28,8 @@
         }
     }
     
-    class TUS_FuncParser extends TUS_BasicParser{        
+    class TUS_FuncParser extends TUS_BasicParser{
+        private $definedFunc = array();
         function __construct($file){            
             $this->file = $file;            
         }
@@ -46,7 +47,7 @@
             while ($this->isToken(",")){
                 $this->token(",");
                 $params[] = $this->param();                
-            }
+            }            
             return new TUS_Arguments($params);
         }
         
@@ -62,8 +63,10 @@
         }
         
         function funcDef(){
-            $this->token("def");            
-            $funcName = new TUS_Name($this->file->read());            
+            $this->token("def");
+            $name = $this->file->read();
+            $this->definedFunc[] = $name->toString();
+            $funcName = new TUS_Name($name);            
             $funcParamList = $this->paramList();            
             $funcBody = $this->block();
             return new TUS_DefStmnt(array($funcName,$funcParamList,$funcBody));
@@ -75,7 +78,7 @@
             while ($this->isToken(",")) {
                 $this->token(",");
                 $args[] = $this->equation();                
-            }
+            }            
             return new TUS_ASTList($args);
         }
         
@@ -106,17 +109,25 @@
                 }
             }
             
-            if ($this->isToken("(")) {
-                $right = $this->postfix();
+            if ($this->isToken("(")) {                
+                if (!in_array($left->toString(),$this->definedFunc)) {
+                    $this->throwError($left->token());                    
+                }
+                $right = $this->postfix();                
                 return new TUS_PrimaryExpr(array ($left,$right));
             } else {
                 return new TUS_PrimaryExpr(array($left));
             }
         }
         
+        function throwError($token) {
+            echo "Error occured at line {$token->getLineNumber()}. Function {$token->getText()} undefined !\n";
+            exit();
+        }
+        
         function simple(){
             $left = $this->equation();
-            if ($this->isToken("(")) {
+            if ($this->isToken("(")) {                
                 $right = $this->postfix();
                 $left = new TUS_ASTList(array($left,$right));
             }
