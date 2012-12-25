@@ -96,7 +96,7 @@ class TUS_DefStmnt extends TUS_ASTList{
     }
     
     function evaluate($env) {
-        $func = new TUS_Function($this->parameters(),$this->body(),$env);            
+        $func = new TUS_Function($this->parameters(),$this->body(),$env,$this->name()->toString());        
         $env->put($this->name()->toString(), $func);            
         return $func;
     }

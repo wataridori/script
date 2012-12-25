@@ -12,13 +12,18 @@
     }        
     
     class TUS_Function{
-        protected $params, $body, $env;
-        function __construct($params, $body, $env) {
+        protected $params, $body, $env, $fname;
+        function __construct($params, $body, $env, $fname) {
             $this->params = $params;
             $this->body = $body;
             $this->env = $env;
+            $this->fname = $fname;
         }
-                
+            
+        function name() {
+            return $this->fname;
+        }
+        
         function parameters(){
             return $this->params;
         }
@@ -63,8 +68,13 @@
         }
         
         function funcDef(){
-            $this->token("def");
+            $this->token("def");            
             $name = $this->file->read();
+            $funcName = $name->toString();            
+            if (in_array($funcName,TUS_BuiltinFunction::$listFunction)) {
+                $error = "has already defined as a built-in funtion";                
+                $this->throwError($name,$error);
+            }
             $this->definedFunc[] = $name->toString();
             $funcName = new TUS_Name($name);            
             $funcParamList = $this->paramList();            
@@ -109,19 +119,21 @@
                 }
             }
             
-            if ($this->isToken("(")) {                
-                if (!in_array($left->toString(),$this->definedFunc)) {
-                    $this->throwError($left->token());                    
+            if ($this->isToken("(")) {
+                $funcname = $left->toString();                
+                if (!in_array($funcname,$this->definedFunc) && !in_array($funcname,TUS_BuiltinFunction::$listFunction)) {
+                  $error = "has not been defined";
+                  $this->throwError($left->token(),$error);                    
                 }
                 $right = $this->postfix();                
                 return new TUS_PrimaryExpr(array ($left,$right));
-            } else {
+            } else {                
                 return new TUS_PrimaryExpr(array($left));
             }
         }
         
-        function throwError($token) {
-            echo "Error occured at line {$token->getLineNumber()}. Function {$token->getText()} undefined !\n";
+        function throwError($token,$error) {            
+            echo "Error occured at line {$token->getLineNumber()}. Function {$token->getText()} {$error} !\n";
             exit();
         }
         
