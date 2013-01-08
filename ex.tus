@@ -1,0 +1,20 @@
+start = time()
+print(start)
+
+def add (a,b) {
+    a + b
+}
+
+def fib (n) {    
+    if (n < 3) {
+       1
+    } else {
+       add (fib (n-1),fib (n-2))
+    }
+}
+
+end = time()
+print(end)
+
+result = fib(5)
+print(result,end-start)
