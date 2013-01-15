@@ -58,6 +58,10 @@
             return $this->is_number;
         }
         
+        function isString(){
+            return $this->is_string;
+        }
+        
         function setTokenString(){
             $this->resetTokenType();
             $this->is_string = true;

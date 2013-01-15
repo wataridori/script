@@ -1,5 +1,5 @@
 start = time()
-print(start)
+print("Start time : ",start)
 
 def add (a,b) {
     a + b
@@ -14,7 +14,8 @@ def fib (n) {
 }
 
 end = time()
-print(end)
+print("End time : ",end)
 
 result = fib(5)
-print(result,end-start)
+print("The result is : ",result)
+print("Computation time : ",end-start, " second!")

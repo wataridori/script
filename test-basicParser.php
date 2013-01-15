@@ -1,10 +1,10 @@
 <?php
-    include (__DIR__."/TUS/main.php");
+    include (__DIR__."/TUSLib/main.php");
     
     $filepath = __DIR__."/basicParser.tus";
     $fileReader = new TUS_FileReader($filepath);        
     $p = new TUS_BasicParser($fileReader);
-    print_r($p->parse());
+    print_r($fileReader);
     
     $fileReader->setCurrent(0);
     $p = new TUS_BasicParser($fileReader);    
