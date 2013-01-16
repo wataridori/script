@@ -1,6 +1,5 @@
 #!/Applications/MAMP/bin/php/php5.3.14/bin/php
-<?php
-	include (__DIR__."/TUSLib/main.php");
+<?php	
 	array_shift($argv);        
 	if (count($argv) != 1) {
 		echo "Invalid command! Please ensure that you have inputed right command. Example : tus \"file name\" \n";
@@ -20,6 +19,9 @@
 		echo "Invalid input file ! TUS only accepts files with extension \"tus\" while {$filename}'s extension is {$ext}\n";
 		return ;
 	}
+	
+	include ("TUSLib/main.php");	
+	
 	$fileReader = new TUS_FileReader($filepath);                        
 	$p = new TUS_FuncParser($fileReader);            
 	$env = new TUS_BasicEnv();    
