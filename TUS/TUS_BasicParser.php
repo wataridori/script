@@ -96,6 +96,9 @@ class TUS_BasicParser {
             $e = $this->equation();
             $b1 = $this->block();
             $i = new TUS_IfStmnt(array($e,$b1));
+            while ($this->isToken(TUS_Token::EOL)){            
+                $this->file->read();
+            }
             if ($this->isToken('else')){
                 $this->token("else");
                 $b2 = $this->block();
@@ -126,6 +129,10 @@ class TUS_BasicParser {
     function parse(){
         $s = "";
         while ($this->file->hasMore()){
+            if ($this->isToken(";") || $this->isToken(TUS_Token::EOL)){
+                $this->file->read();
+                continue;
+            }
             $p = $this->program();            
             $s .= $p->toString()."\n";
         }
@@ -133,7 +140,11 @@ class TUS_BasicParser {
     }
     
     function evaluate($env){        
-        while ($this->file->hasMore()){            
+        while ($this->file->hasMore()){
+            if ($this->isToken(";") || $this->isToken(TUS_Token::EOL)){                
+                $this->file->read();                
+                continue;
+            } 
             $p = $this->program();            
             $p->evaluate($env);            
         }        

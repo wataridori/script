@@ -5,7 +5,8 @@ def add (a,b) {
 def fib (n) {    
     if (n < 3) {
        1
-    } else {
+    }
+    else {
        add (fib (n-1),fib (n-2))
     }
 }
