@@ -4,7 +4,7 @@
         private $tokenCount = 0;
         private $text;
         private $numReg ="/[0-9]+/";
-        private $strReg = '/\"(\\"|\\\\|\\n|[^"])*\"/';
+        private $strReg = '/\"(\\\\\"|\\\\\\\\|\\\\n|[^\"])*\"/';  
         private $idenReg = "/[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\|\||[[:punct:]]/";
         private $tokens;
         private $current = 0;
@@ -15,25 +15,28 @@
             $reg = "/\\s*|((\/\/.*)|([0-9]+)|(\"(\\\\\"|\\\\\\\\|\\\\n|[^\"])*\")"."|[A-Z_a-z][A-Z_a-z0-9]*|==|<=|>=|&&|\\|\\||[[:punct:]])?/";
             preg_match_all($reg,$this->text,$matches);
             $i = 0;
-            foreach ($matches[0] as $match){
-                
+            foreach ($matches[0] as $match){                
                 if (preg_match("/\/\/.*/",$match)){                    
                     $token = new TUS_Token($match,TUS_Token::COM,$i,$this->lineNumber);                                        
                     $this->tokens[$i++] = $token;
                 }
-                if (!preg_match("/[\s]+/", $match) && $match != ""){                    
+                else if (preg_match("/[\s]+/", $match) && preg_match($this->strReg,$match)) {                    
+                    $token = new TUS_Token($match,TUS_Token::STR,$i,$this->lineNumber);                        
+                    $this->tokens[$i++] = $token;
+                }
+                else if (!preg_match("/[\s]+/", $match) && $match != ""){                    
                     if (preg_match($this->numReg,$match)){                        
                         $token = new TUS_Token($match,TUS_Token::NUM,$i,$this->lineNumber);                        
                         $this->tokens[$i++] = $token;
-                    }                    
-                    else if (preg_match($this->strReg,$match)){                        
+                    }                                        
+                    else if (preg_match($this->strReg, $match)) {                        
                         $token = new TUS_Token($match,TUS_Token::STR,$i,$this->lineNumber);                        
                         $this->tokens[$i++] = $token;
                     }
                     else if (preg_match($this->idenReg,$match)){
                         $token = new TUS_Token($match,TUS_Token::IDE,$i,$this->lineNumber);                        
                         $this->tokens[$i++] = $token;
-                    }
+                    }                    
                 }                
             }
             $this->tokenCount = count($this->tokens);

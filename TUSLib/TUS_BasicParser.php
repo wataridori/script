@@ -13,8 +13,11 @@ class TUS_BasicParser {
             return $e;
         } else {
             $t = $this->file->read();
+            print_r($t);
             if ($t->isIdentifier()) return new TUS_Name($t);
-            if ($t->isNumber() || $t->isString()) return new TUS_ASTLeaf($t);
+            if ($t->isNumber() || $t->isString()) {                
+                return new TUS_ASTLeaf($t);
+            }
             else $this->throwError($t);
         }        
     }
@@ -48,7 +51,7 @@ class TUS_BasicParser {
     }
     
     function inequality(){
-        $left = $this->expr();
+        $left = $this->expr();        
         while ($this->isToken("==") || $this->isToken(">") || $this->isToken("<")) {
             $op = new TUS_ASTLeaf($this->file->read());
             $right = $this->expr();
@@ -58,10 +61,10 @@ class TUS_BasicParser {
     }
     
     function equation(){
-        $left = $this->inequality();
+        $left = $this->inequality();        
         while ($this->isToken("=")){
-            $op = new TUS_ASTLeaf($this->file->read());
-            $right = $this->equation();
+            $op = new TUS_ASTLeaf($this->file->read());            
+            $right = $this->equation();            
             $left = new TUS_BinaryExpr(array($left,$op,$right));
         }
         return $left;

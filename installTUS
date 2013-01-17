@@ -1,0 +1,16 @@
+#!/bin/bash
+
+me=`sudo whoami`
+if [ "$me" != "root" ]
+then
+    echo $me
+    echo "Permission denied"
+else
+    var=`which php`
+    echo "#!$var" > /usr/bin/tus
+    echo "<?php" >> /usr/bin/tus
+    echo "	include (\"TUSLanguage.php\");" >> /usr/bin/tus    
+    echo "?>"  >> /usr/bin/tus
+    chmod 777 /usr/bin/tus
+    echo "Install tus command successfully !"
+fi

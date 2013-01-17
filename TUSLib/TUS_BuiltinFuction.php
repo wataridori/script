@@ -7,8 +7,10 @@ class TUS_BuiltinFunction {
     }
     
     function TUS_print($args) {        
-        foreach ($args as $arg)
-            echo $arg."\n";
+        foreach ($args as $arg){
+            echo str_replace('"','',$arg);            
+        }
+        echo "\n";
         return null;
     }
     
