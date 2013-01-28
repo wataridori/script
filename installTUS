@@ -6,6 +6,7 @@ then
     echo $me
     echo "Permission denied"
 else
+    echo $me
     var=`which php`
     echo "#!$var" > /usr/bin/tus
     echo "<?php" >> /usr/bin/tus
