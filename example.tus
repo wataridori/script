@@ -1,3 +1,4 @@
+print("Calculating the 20th Fibonacci Number ...")
 start = time()
 print("Start time : ",start)
 
@@ -12,10 +13,9 @@ def fib (n) {
        add (fib (n-1),fib (n-2))
     }
 }
-
+result = fib(20)
 end = time()
 print("End time : ",end)
-
-result = fib(5)
 print("The result is : ",result)
 print("Computation time : ",end-start, " second!")
+print("Current time : ",date());

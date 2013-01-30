@@ -1,0 +1,5 @@
+print ("Test Error Handler");
+
+def print(a,b) {
+    a+b
+}
