@@ -1,4 +1,4 @@
-#!/Applications/MAMP/bin/php/php5.3.14/bin/php
+#!/Applications/MAMP/bin/php/php5.3.6/bin/php
 <?php	
 	array_shift($argv);        
 	if (count($argv) != 1) {

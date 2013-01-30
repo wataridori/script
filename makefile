@@ -10,4 +10,4 @@ shellScript:
 	@echo "	include (\"TUSLanguage.php\");" >> $(SCRIPTPATH)/tus
 	@echo "?>"  >> $(SCRIPTPATH)/tus
 	chmod 777 $(SCRIPTPATH)/tus
-	@echo "Install tus command successfully !"
+	@echo "Install tus language successfully !"

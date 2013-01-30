@@ -11,4 +11,4 @@ def fib (n) {
     }
 }
 
-result = fib(5)
+print(fib(5))
